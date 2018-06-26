@@ -1,19 +1,32 @@
 
 //Create an empty array to list the buttons content
-var animals = [];
+var animals = ["shark", "hippopotamus", "camel", "dolphin", "penguin"];
 
 //Create function that would call on gifs from API to display
 function displayAnimalGifs () {
-var APIkey = "y6P8GrC8GM1esEKJFShOUKV4jE83beiJ";
 
-var queryURL = "https://api.giphy.com/v1/gifs/search?api_key="+ APIkey +"&q=shark&limit=10&offset=0&rating=PG&lang=en";
+var animal = $(this).attr("data-name");
+
+var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+animal + "&api_key=dc6zaTOxFJmzC&limit=10";
+
+$.ajax({
+    url: queryURL,
+    method: "GET"
+}).then(function(response) {
+    console.log(response);
+})
 }
 
 //Create function that would render
 function renderButtons () {
 $("#show-gifs").empty();
 for (var i = 0; i < animals.length; i++) {
-    
+    var a = $("<button>");
+    a.addClass("animal-btn");
+    a.attr("data-name", animals[i]);
+    a.text(animals[i]);
+    $("#show-buttons").append(a);
 }}
 
 $("#submitBtn").click(function() {
@@ -26,6 +39,6 @@ $("#submitBtn").click(function() {
     }
 })
 
-$(document).on("click", ".submitBtn", displayAnimalGifs);
+$(document).on("click", ".animal-btn", displayAnimalGifs);
 
 renderButtons();
