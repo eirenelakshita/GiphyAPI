@@ -14,7 +14,14 @@ $.ajax({
     url: queryURL,
     method: "GET"
 }).then(function(response) {
+    var results = response.data;
     console.log(response);
+    for (var i = 0; i < results.length; i++) {
+    console.log(results[i].images.fixed_height.url);
+    var rating = results[i].rating;
+    var p = $("<p>").text("Rating: " + rating);
+    $("#show-gifs").prepend(p);
+    }
 })
 }
 
