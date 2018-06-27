@@ -15,15 +15,35 @@ $.ajax({
     method: "GET"
 }).then(function(response) {
     var results = response.data;
-    console.log(response);
+    console.log(results);
     for (var i = 0; i < results.length; i++) {
-    console.log(results[i].images.fixed_height.url);
+    console.log(results[i].images.fixed_height_still.url);
+    var gifDiv = $("<div>");
     var rating = results[i].rating;
+    var animalImage = $("<img class='gif'>");
     var p = $("<p>").text("Rating: " + rating);
-    $("#show-gifs").prepend(p);
+    animalImage.attr("src", results[i].images.fixed_height_still.url);
+    animalImage.attr("data-state", "still");
+    animalImage.attr("data-still", results[i].images.fixed_height_still.url);
+    animalImage.attr("data-animate", results[i].images.fixed_height.url);
+    gifDiv.append(p);
+    gifDiv.append(animalImage)
+    $("#show-gifs").prepend(gifDiv);
     }
+
+    $(".gif").on("click", function() {
+        var state = $(this).attr("data-state");
+        if (state === "still") {
+            $(this).attr("src", $(this).attr("data-animate"));
+            $(this).attr("data-state", "animate");
+          } else {
+            $(this).attr("src", $(this).attr("data-still"));
+            $(this).attr("data-state", "still");
+          }
+        });
 })
 }
+
 
 //Create function that would render
 function renderButtons () {
@@ -49,3 +69,5 @@ $("#submitBtn").click(function() {
 $(document).on("click", ".animal-btn", displayAnimalGifs);
 
 renderButtons();
+
+
